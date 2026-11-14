@@ -6,7 +6,8 @@ import { articles, calculerTTC } from "@/app/data/Article";
 export default function Details() {
 
   // 1. Récupérer le code de l'article
-  const { code } = useLocalSearchParams();
+  const params = useLocalSearchParams<{ code?: string | string[] }>();
+  const code = Array.isArray(params.code) ? params.code[0] : params.code;
 
   // 2. Rechercher l'article
   const article = articles.find(a => a.code === code);
@@ -16,7 +17,15 @@ export default function Details() {
 
   // Si l'article n'existe pas
   if (!article) {
-    return <Text>Article introuvable</Text>;
+    return (
+      <View style={styles.container}>
+        <Text style={styles.titre}>Article introuvable</Text>
+        <Text style={{ marginBottom: 20, color: "#666" }}>
+          {code ? `Aucun article trouvé pour la référence "${code}".` : "Aucun code d'article spécifié."}
+        </Text>
+        <Button title="Retour au catalogue" onPress={() => router.back()} />
+      </View>
+    );
   }
 
   // 4. Calculer le prix total
