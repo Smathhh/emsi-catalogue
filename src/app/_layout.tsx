@@ -9,7 +9,7 @@ export default function RootLayout() {
       />
 
       <Stack.Screen
-        name="tabs"
+        name="Drawer"
         options={{ headerShown: false }}
       />
 
